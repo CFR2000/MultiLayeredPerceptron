@@ -41,8 +41,16 @@ class MultilayeredPerceptron:
 
     def train(self, inputs, labels, epochs):
         # Train the network for a number of epochs
-        for _ in range(epochs):
+        for epoch in range(epochs):
+            
+            # Print the current epoch number
+            print(f"Epoch: {epoch}")
+
+            # Perform the backpropagation step
             self.backward(inputs, labels)
+
+            # Print the output of the network after training
+            print(f"Output: {self.forward(inputs)}")
 
     def predict(self, inputs):
         # Use the trained network to make predictions on new data
