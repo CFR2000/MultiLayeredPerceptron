@@ -24,23 +24,41 @@ class MultilayeredPerceptron:
         # Store the learning rate for the network
         self.learning_rate = learning_rate
         self.activation = activation
+        self.dropout_rate = 0.5
         pass
 
     def forward(self, inputs):
-        # Perform the forward propagataion step
+        # Perform the forward propagation step
+
+        # Define the hidden size
+        hidden_size = self.weights1.shape[1]
+
         hidden = self.activation(np.dot(inputs, self.weights1) + self.bias1)
+
+        # Apply dropout to the hidden layer
+        hidden *= np.random.binomial([np.ones((len(inputs), hidden_size))], 1-self.dropout_rate)[0] * (1.0/(1-self.dropout_rate))
+
         output = sigmoid(np.dot(hidden, self.weights2) + self.bias2)
         return output
         
     def backward(self, inputs, labels):
         # Perform the backpropagation step
-        # Comput the error at the output layer
+
+        # Define the hidden size
+        hidden_size = self.weights1.shape[1]
+
+        # Compute the output of the network
         hidden = self.activation(np.dot(inputs, self.weights1) + self.bias1)
+
+        # Apply dropout to the hidden layer
+        hidden *= np.random.binomial([np.ones((len(inputs), hidden_size))], 1-self.dropout_rate)[0] * (1.0/(1-self.dropout_rate))
+
         output = sigmoid(np.dot(hidden, self.weights2) + self.bias2)
-        # Cost
+
+        # Compute the error at the output layer
         error = labels - output
 
-        # Comput the error at the hidden layer
+        # Compute the error at the hidden layer
         hidden_error = np.dot(error, self.weights2.T)
 
         # Update the weights and biases of each layer
@@ -48,6 +66,7 @@ class MultilayeredPerceptron:
         self.bias2 += self.learning_rate * np.sum(error, axis=0)
         self.weights1 += self.learning_rate * np.dot(inputs.T, hidden_error)
         self.bias1 += self.learning_rate * np.sum(hidden_error, axis=0)
+
 
     def train(self, inputs, labels, epochs):
         # Train the network for a number of epochs
