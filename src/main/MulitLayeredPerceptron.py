@@ -15,3 +15,10 @@ class MultilayeredPerceptron:
         # Store the learning rate for the network
         self.learning_rate = learning_rate
         pass
+
+    def forward(self, inputs):
+        # Perform the forward propagataion step
+        hidden = sigmoid(np.dot(inputs, self.weights1) + self.bias1)
+        output = sigmoid(np.dot(hidden, self.weights2) + self.bias2)
+        return output
+        
