@@ -1,4 +1,7 @@
 import numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 
 def sigmoid(x):
     # Define the sigmoid activation function
@@ -66,13 +69,40 @@ class MultilayeredPerceptron:
     
 
 def main():
+    # # Initialize the network
+    # network = MultilayeredPerceptron(2, 4, 1, 0.1)
+
+    # # Train the network
+    # inputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+    # labels = np.array([[0], [1], [1], [0]])
+    # network.train(inputs, labels, 1000)
+
     # Initialize the network
-    network = MultilayeredPerceptron(2, 4, 1, 0.1)
+    input_size = 2
+    hidden_size = 4
+    output_size = 1
+    learning_rate = 0.1
+    activation = sigmoid
+
+    network = MultilayeredPerceptron(input_size, hidden_size, output_size, learning_rate, activation)
+
+    # Load the XOR dataset
+    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+    y = np.array([[0], [1], [1], [0]])
 
     # Train the network
-    inputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-    labels = np.array([[0], [1], [1], [0]])
-    network.train(inputs, labels, 1000)
+    epochs = 1000
+    network.train(X, y, epochs)
+
+    # Test the network
+    X_test = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+    y_test = np.array([[0], [1], [1], [0]])
+    y_pred = network.predict(X_test)
+    y_pred = np.round(y_pred)
+
+    # Print the accuracy of the network's predictions
+    accuracy = accuracy_score(y_test, y_pred)
+    print('Accuracy:', accuracy)
 
 if __name__ == "__main__":
     main()
