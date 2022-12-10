@@ -4,8 +4,14 @@ def sigmoid(x):
     # Define the sigmoid activation function
     return 1 / (1+np.exp(-x))
 
+def tanh(x):
+    return np.tanh(x)
+
+def relu(x):
+    return np.maximum(0, x)
+
 class MultilayeredPerceptron:
-    def __init__(self, input_size, hidden_size, output_size, learning_rate):
+    def __init__(self, input_size, hidden_size, output_size, learning_rate, activation):
         # Initialize the weights and biases for each layer of the network
         self.weights1 = np.random.rand(input_size, hidden_size) * 0.1
         self.bias1 = np.random.rand(hidden_size) * 0.1
@@ -14,18 +20,19 @@ class MultilayeredPerceptron:
 
         # Store the learning rate for the network
         self.learning_rate = learning_rate
+        self.activation = activation
         pass
 
     def forward(self, inputs):
         # Perform the forward propagataion step
-        hidden = sigmoid(np.dot(inputs, self.weights1) + self.bias1)
+        hidden = self.activation(np.dot(inputs, self.weights1) + self.bias1)
         output = sigmoid(np.dot(hidden, self.weights2) + self.bias2)
         return output
         
     def backward(self, inputs, labels):
         # Perform the backpropagation step
         # Comput the error at the output layer
-        hidden = sigmoid(np.dot(inputs, self.weights1) + self.bias1)
+        hidden = self.activation(np.dot(inputs, self.weights1) + self.bias1)
         output = sigmoid(np.dot(hidden, self.weights2) + self.bias2)
         # Cost
         error = labels - output
@@ -42,7 +49,7 @@ class MultilayeredPerceptron:
     def train(self, inputs, labels, epochs):
         # Train the network for a number of epochs
         for epoch in range(epochs):
-            
+
             # Print the current epoch number
             print(f"Epoch: {epoch}")
 
