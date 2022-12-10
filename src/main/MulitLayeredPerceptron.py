@@ -38,3 +38,14 @@ class MultilayeredPerceptron:
         self.bias2 += self.learning_rate * np.sum(error, axis=0)
         self.weights1 += self.learning_rate * np.dot(inputs.T, hidden_error)
         self.bias1 += self.learning_rate * np.sum(hidden_error, axis=0)
+
+    def train(self, inputs, labels, epochs):
+        # Train the network for a number of epochs
+        for _ in range(epochs):
+            self.backward(inputs, labels)
+
+    def predict(self, inputs):
+        # Use the trained network to make predictions on new data
+        return self.forward(inputs)
+
+        
