@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+import random
 
 def sigmoid(x):
     # Define the sigmoid activation function
@@ -16,60 +17,56 @@ def relu(x):
 class MultilayeredPerceptron:
     def __init__(self, input_size, hidden_size, output_size, learning_rate, activation):
         # Initialize the weights and biases for each layer of the network
-        self.weights1 = np.random.rand(input_size, hidden_size) * 0.1
-        self.bias1 = np.random.rand(hidden_size) * 0.1
-        self.weights2 = np.random.rand(hidden_size, output_size) * 0.1
-        self.bias2 = np.random.rand(output_size) * 0.1
+        self.weights1 = np.random.normal(0.0, pow(hidden_size, -0.5), (hidden_size, input_size))
+        self.weights2 = np.random.normal(0.0, pow(output_size, -0.5), (output_size, hidden_size))
 
         # Store the learning rate for the network
         self.learning_rate = learning_rate
         self.activation = activation
-        self.dropout_rate = 0.5
         pass
 
-    def forward(self, inputs):
+    def product(self, x, y):
+        return np.dot(x,y)
+
+    def matrix_2d(self, x):
+        return np.array(x, ndmin=2).T
+
+    def forward(self, inputs, labels):
         # Perform the forward propagation step
+        inputs = self.matrix_2d(inputs)
+        labels = self.matrix_2d(labels)
 
-        # Define the hidden size
-        hidden_size = self.weights1.shape[1]
-
-        hidden = self.activation(np.dot(inputs, self.weights1) + self.bias1)
-
-        # Apply dropout to the hidden layer
-        hidden *= np.random.binomial([np.ones((len(inputs), hidden_size))], 1-self.dropout_rate)[0] * (1.0/(1-self.dropout_rate))
-
-        output = sigmoid(np.dot(hidden, self.weights2) + self.bias2)
-        return output
+        #calculate values going into the hidden layer
+        hidden_in = self.product(self.weights1, inputs)
+        #passing hidden inputs thru activation to get weighted sum
+        z1 = self.activation(hidden_in)
+        #get weight sof values going into output layer
+        output_in = self.product(self.weights2, z1)
+        #getting value for the output layer
+        z2 = self.activation(output_in)
+        return z1, z2
         
     def backward(self, inputs, labels):
         # Perform the backpropagation step
+        # Compute the output of the network using the forward method
+        hidden_val, output_val = self.forward(inputs, labels)
 
-        # Define the hidden size
-        hidden_size = self.weights1.shape[1]
-
-        # Compute the output of the network
-        hidden = self.activation(np.dot(inputs, self.weights1) + self.bias1)
-
-        # Apply dropout to the hidden layer
-        hidden *= np.random.binomial([np.ones((len(inputs), hidden_size))], 1-self.dropout_rate)[0] * (1.0/(1-self.dropout_rate))
-
-        output = sigmoid(np.dot(hidden, self.weights2) + self.bias2)
-
+        inputs = self.matrix_2d(inputs)
+        labels = self.matrix_2d(labels)
         # Compute the error at the output layer
-        error = labels - output
+        error = labels - output_val
+        # Transpose the weights2 array so that it has the correct dimensions
+        h_output_err = self.product(self.weights2.T, error)
+        ## Now tweak the network
+        self.weights2 += self.learning_rate * self.product(((error * output_val) * (1.0 - output_val)),hidden_val.T)
+        self.weights1 += self.learning_rate * self.product(((h_output_err * hidden_val) * (1.0 - hidden_val)),inputs.T)
 
-        # Compute the error at the hidden layer
-        hidden_error = np.dot(error, self.weights2.T)
-
-        # Update the weights and biases of each layer
-        self.weights2 += self.learning_rate * np.dot(hidden.T, error)
-        self.bias2 += self.learning_rate * np.sum(error, axis=0)
-        self.weights1 += self.learning_rate * np.dot(inputs.T, hidden_error)
-        self.bias1 += self.learning_rate * np.sum(hidden_error, axis=0)
-
+        pass
 
     def train(self, inputs, labels, epochs):
         # Train the network for a number of epochs
+        z1 = []
+        output_val = []
         for epoch in range(epochs):
 
             # Print the current epoch number
@@ -77,24 +74,24 @@ class MultilayeredPerceptron:
 
             # Perform the backpropagation step
             self.backward(inputs, labels)
-
+            
+            z1, output_val = self.forward(inputs, labels)
             # Print the output of the network after training
-            print(f"Output: {self.forward(inputs)}")
+            print(f"Output: {output_val}")
 
-    def predict(self, inputs):
-        # Use the trained network to make predictions on new data
-        return self.forward(inputs)
+    def predict(self, inputs, labels):
+        # Use the trained network to make predictions on new dat
+        z1=[]
+        output_val=[]
+        z1, output_val = self.forward(inputs, labels)
+        return output_val
 
     
 
 def main():
-    # # Initialize the network
-    # network = MultilayeredPerceptron(2, 4, 1, 0.1)
-
-    # # Train the network
-    # inputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-    # labels = np.array([[0], [1], [1], [0]])
-    # network.train(inputs, labels, 1000)
+        # Load the XOR dataset
+    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+    y = np.array([[0], [1], [1], [0]])
 
     # Initialize the network
     input_size = 2
@@ -105,21 +102,17 @@ def main():
 
     network = MultilayeredPerceptron(input_size, hidden_size, output_size, learning_rate, activation)
 
-    # Load the XOR dataset
-    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-    y = np.array([[0], [1], [1], [0]])
-
     # Train the network
-    epochs = 1000
+    epochs = 100000
     network.train(X, y, epochs)
 
     # Test the network
     X_test = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
     y_test = np.array([[0], [1], [1], [0]])
-    y_pred = network.predict(X_test)
+    y_pred = network.predict(X_test, y_test)
     y_pred = np.round(y_pred)
+    y_pred = y_pred.reshape(y_test.shape)
 
-    # Print the accuracy of the network's predictions
     accuracy = accuracy_score(y_test, y_pred)
     print('Accuracy:', accuracy)
 
