@@ -48,4 +48,16 @@ class MultilayeredPerceptron:
         # Use the trained network to make predictions on new data
         return self.forward(inputs)
 
-        
+    
+
+def main():
+    # Initialize the network
+    network = MultilayeredPerceptron(2, 4, 1, 0.1)
+
+    # Train the network
+    inputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+    labels = np.array([[0], [1], [1], [0]])
+    network.train(inputs, labels, 1000)
+
+if __name__ == "__main__":
+    main()
