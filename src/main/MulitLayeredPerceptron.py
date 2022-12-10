@@ -86,14 +86,55 @@ class MultilayeredPerceptron:
         z1, output_val = self.forward(inputs, labels)
         return output_val
 
+
+
+def train_and_test_and_save(network, X_train, y_train, X_test, y_test, epochs):
+    # Train the network for the specified number of epochs
+    for epoch in range(epochs):
+        # Print the current epoch number
+        print(f"Epoch: {epoch}")
+
+        # Train the network on the training data
+        network.backward(X_train, y_train)
+
+        # Use the trained network to make predictions on the test data
+        y_pred = network.predict(X_test, y_test)
+        y_pred = np.round(y_pred)
+        y_pred = y_pred.reshape(y_test.shape)
+
+        # Compute the accuracy of the predictions
+        accuracy = accuracy_score(y_test, y_pred)
+
+        # Print the accuracy of the predictions
+        print(f"Accuracy: {accuracy}")
     
 
+    # Save the training and test scores to a text file
+    with open("scores.txt", "w") as f:
+        # Train the network on the training data
+        for epoch in range(epochs):
+            network.train(X_train, y_train, epoch)
+
+            # Use the trained network to make predictions on the test data
+            y_pred = network.predict(X_test, y_test)
+            y_pred = np.round(y_pred)
+            y_pred = y_pred.reshape(y_test.shape)
+
+            # Compute the accuracy of the predictions
+            accuracy = accuracy_score(y_test, y_pred)
+
+            # Write the epoch and accuracy to the file
+            f.write(f"Epoch: {epoch}, Accuracy: {accuracy}\n")
+
+
+
+
 def main():
-        # Load the XOR dataset
+    # Load the XOR dataset
     X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
     y = np.array([[0], [1], [1], [0]])
 
-    # Initialize the network
+    #Initialize the network
     input_size = 2
     hidden_size = 4
     output_size = 1
@@ -102,19 +143,21 @@ def main():
 
     network = MultilayeredPerceptron(input_size, hidden_size, output_size, learning_rate, activation)
 
-    # Train the network
-    epochs = 100000
-    network.train(X, y, epochs)
-
     # Test the network
     X_test = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
     y_test = np.array([[0], [1], [1], [0]])
-    y_pred = network.predict(X_test, y_test)
-    y_pred = np.round(y_pred)
-    y_pred = y_pred.reshape(y_test.shape)
 
-    accuracy = accuracy_score(y_test, y_pred)
-    print('Accuracy:', accuracy)
+
+    epochs = 10000
+
+   
+    train_and_test_and_save(network, X, y, X_test, y_test, epochs)
+    # y_pred = network.predict(X_test, y_test)
+    # y_pred = np.round(y_pred)
+    # y_pred = y_pred.reshape(y_test.shape)
+
+    # accuracy = accuracy_score(y_test, y_pred)
+    # print('Accuracy:', accuracy)
 
 if __name__ == "__main__":
     main()
