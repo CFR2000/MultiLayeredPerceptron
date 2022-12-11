@@ -12,6 +12,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import math
 from visualise import confusion_visual
+from sklearn.model_selection import GridSearchCV
 
 
 # ==================================================================== #
@@ -142,11 +143,16 @@ def run_testing(network, x, y):
         else:
             num_correct.append(0)
 
-    correct_array = np.asarray(num_correct)
-    print("\nTesting Performance = ",
-          correct_array.sum() / correct_array.size)
-    evaluate(true_labels, predicted_labels)
+    with open(f"scores_task2_{count}.txt", "w") as f:
+        correct_array = np.asarray(num_correct)
+        print("\nTesting Performance = ",
+            correct_array.sum() / correct_array.size)
+        evaluate(true_labels, predicted_labels)
     pass
+
+# ==================================================================== #
+#           Helper Functions, grabbing values for Evaluation           #
+# ==================================================================== #
 
 
 def get_pred_values(network, x, y):
@@ -205,11 +211,10 @@ def generate_data(rows, cols, train_size):
 pass
 
 
+
 # ==================================================================== #
 #                       TESTING SUITIES                                #
 # ==================================================================== #
-
-
 def task2_100():
 
     # load the data set.
@@ -236,7 +241,7 @@ def task2_1000():
     X_train, y_train, X_test, y_test = generate_data(
         rows=500, cols=4, train_size=0.8)
     # Number of epochs the network will be trained on.
-    epochs = 1000
+    epochs = 5000
     # Create a network.
     network = MultilayeredPerceptron(
         input_size=4, hidden_size=40, output_size=1, learning_rate=0.1, activation=sigmoid)
@@ -312,14 +317,26 @@ def test():
 
 
 # ==================================================================== #
-#                             MAIN                                     #s
+#                             MAIN                                     #
 # ==================================================================== #
 
 
 if __name__ == "__main__":
-    task2_100()   # network = MultilayeredPerceptron(input_size=4, hidden_size=5, output_size=1, learning_rate=0.1, activation=sigmoid)
-    task2_1000()  # network = MultilayeredPerceptron(input_size=4, hidden_size=50, output_size=1, learning_rate=0.1, activation=sigmoid)
-    task2_10000() # network = MultilayeredPerceptron(input_size=4, hidden_size=500, output_size=1, learning_rate=0.1, activation=sigmoid)
-    task2_25000()
-    task2_40000()
+    # task2_100()   # network = MultilayeredPerceptron(input_size=4, hidden_size=5, output_size=1, learning_rate=0.1, activation=sigmoid)
+    # task2_1000()  # network = MultilayeredPerceptron(input_size=4, hidden_size=50, output_size=1, learning_rate=0.1, activation=sigmoid)
+    # task2_10000() # network = MultilayeredPerceptron(input_size=4, hidden_size=500, output_size=1, learning_rate=0.1, activation=sigmoid)
+    # task2_25000()
+    # task2_40000()
+    
     pass
+
+
+
+
+#************************************************************************#
+
+# ==================================================================== #
+#                           END OF PROGRAM                             #
+# ==================================================================== #
+
+#************************************************************************#
