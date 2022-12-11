@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 import numpy as np
 from itertools import product
+from NumericVectors_MulitLayerPerceptron import get_pred_values
 
 
 def visualise_learning(output_data, num_epochs):
@@ -20,15 +21,20 @@ def visualise_learning(output_data, num_epochs):
     pass
 
 
-def confusion_visual(true_labels, predicted_labels):
-    cm = confusion_matrix(true_labels, predicted_labels)
+def confusion_visual(network, X_test, y_test, epochs):
+    true_labels, predicted_labels = get_pred_values(network, X_test, y_test)
+
+    bins = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    true_discrete = np.digitize(true_labels, bins)
+    pred_discrete = np.digitize(predicted_labels, bins)
+    cm = confusion_matrix(true_discrete, pred_discrete)
 
     # Plotting confusion matrix
     plt.imshow(cm, interpolation="nearest", cmap=plt.cm.Blues)
     plt.colorbar()
 
     # add labels to the plot to show the number of true positive, true negative, false positive, and false negative predictions.
-    classes = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    classes = bins
     tick_marks = np.arange(len(classes))
     plt.xticks(tick_marks, classes, rotation=45)
     plt.yticks(tick_marks, classes)
@@ -43,6 +49,6 @@ def confusion_visual(true_labels, predicted_labels):
     plt.xlabel("Predicted label")
     plt.tight_layout()
 
-    plt.savefig("confusion_matrix.png")
+    plt.savefig(f"confusion_matrix_{epochs}.png")
 
     pass
