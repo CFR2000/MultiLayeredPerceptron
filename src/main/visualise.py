@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 import numpy as np
 from itertools import product
-from NumericVectors_MulitLayerPerceptron import get_pred_values
 
 
 def visualise_learning(output_data, num_epochs):
@@ -21,9 +20,7 @@ def visualise_learning(output_data, num_epochs):
     pass
 
 
-def confusion_visual(network, X_test, y_test, epochs):
-    true_labels, predicted_labels = get_pred_values(network, X_test, y_test)
-
+def confusion_visual(true_labels, predicted_labels, epochs):
     bins = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
     true_discrete = np.digitize(true_labels, bins)
     pred_discrete = np.digitize(predicted_labels, bins)
@@ -50,5 +47,6 @@ def confusion_visual(network, X_test, y_test, epochs):
     plt.tight_layout()
 
     plt.savefig(f"confusion_matrix_{epochs}.png")
+    print("Matrix saved as .png")
 
     pass
