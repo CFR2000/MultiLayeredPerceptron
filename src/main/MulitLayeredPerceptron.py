@@ -3,6 +3,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import random
+import pandas as pd
+import matplotlib.pyplot as plt
 
 def sigmoid(x):
     # Define the sigmoid activation function
@@ -20,6 +22,8 @@ class MultilayeredPerceptron:
         self.weights1 = np.random.normal(0.0, pow(hidden_size, -0.5), (hidden_size, input_size))
         self.weights2 = np.random.normal(0.0, pow(output_size, -0.5), (output_size, hidden_size))
 
+        # self.weights1 = np.random.normal(0.0, pow(hidden_size, -0.5), (input_size, hidden_size))
+        # self.weights2 = np.random.normal(0.0, pow(output_size, -0.5), (hidden_size, output_size))
         # Store the learning rate for the network
         self.learning_rate = learning_rate
         self.activation = activation
@@ -31,10 +35,9 @@ class MultilayeredPerceptron:
     def matrix_2d(self, x):
         return np.array(x, ndmin=2).T
 
-    def forward(self, inputs, labels):
+    def forward(self, inputs):
         # Perform the forward propagation step
         inputs = self.matrix_2d(inputs)
-        labels = self.matrix_2d(labels)
 
         #calculate values going into the hidden layer
         hidden_in = self.product(self.weights1, inputs)
@@ -49,7 +52,7 @@ class MultilayeredPerceptron:
     def backward(self, inputs, labels):
         # Perform the backpropagation step
         # Compute the output of the network using the forward method
-        hidden_val, output_val = self.forward(inputs, labels)
+        hidden_val, output_val = self.forward(inputs)
 
         inputs = self.matrix_2d(inputs)
         labels = self.matrix_2d(labels)
@@ -65,7 +68,6 @@ class MultilayeredPerceptron:
 
     def train(self, inputs, labels, epochs):
         # Train the network for a number of epochs
-        z1 = []
         output_val = []
         for epoch in range(epochs):
 
@@ -75,15 +77,14 @@ class MultilayeredPerceptron:
             # Perform the backpropagation step
             self.backward(inputs, labels)
             
-            z1, output_val = self.forward(inputs, labels)
+            _, output_val = self.forward(inputs)
             # Print the output of the network after training
             print(f"Output: {output_val}")
 
-    def predict(self, inputs, labels):
+    def predict(self, inputs):
         # Use the trained network to make predictions on new dat
-        z1=[]
         output_val=[]
-        z1, output_val = self.forward(inputs, labels)
+        _, output_val = self.forward(inputs)
         return output_val
 
 
@@ -98,7 +99,7 @@ def train_and_test_and_save(network, X_train, y_train, X_test, y_test, epochs):
         network.backward(X_train, y_train)
 
         # Use the trained network to make predictions on the test data
-        y_pred = network.predict(X_test, y_test)
+        y_pred = network.predict(X_test)
         y_pred = np.round(y_pred)
         y_pred = y_pred.reshape(y_test.shape)
 
@@ -116,7 +117,7 @@ def train_and_test_and_save(network, X_train, y_train, X_test, y_test, epochs):
             network.train(X_train, y_train, epoch)
 
             # Use the trained network to make predictions on the test data
-            y_pred = network.predict(X_test, y_test)
+            y_pred = network.predict(X_test)
             y_pred = np.round(y_pred)
             y_pred = y_pred.reshape(y_test.shape)
 
@@ -127,9 +128,7 @@ def train_and_test_and_save(network, X_train, y_train, X_test, y_test, epochs):
             f.write(f"Epoch: {epoch}, Accuracy: {accuracy}\n")
 
 
-
-
-def main():
+def task1():
     # Load the XOR dataset
     X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
     y = np.array([[0], [1], [1], [0]])
@@ -148,16 +147,24 @@ def main():
     y_test = np.array([[0], [1], [1], [0]])
 
 
-    epochs = 10000
+    epochs = 1000
+    # train_and_test_and_save(network, X, y, X_test, y_test, epochs)
 
-   
-    train_and_test_and_save(network, X, y, X_test, y_test, epochs)
-    # y_pred = network.predict(X_test, y_test)
-    # y_pred = np.round(y_pred)
-    # y_pred = y_pred.reshape(y_test.shape)
+    network.train(X, y, epochs)
+  
 
-    # accuracy = accuracy_score(y_test, y_pred)
-    # print('Accuracy:', accuracy)
+    y_pred = network.predict(X_test)
+
+    # visualise_learning(output_data, epochs)
+
+    y_pred = np.round(y_pred)
+    y_pred = y_pred.reshape(y_test.shape)
+
+    accuracy = accuracy_score(y_test, y_pred)
+    print('Accuracy:', accuracy)
+
 
 if __name__ == "__main__":
-    main()
+    task1()
+
+
