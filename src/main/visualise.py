@@ -46,7 +46,29 @@ def confusion_visual(true_labels, predicted_labels, epochs):
     plt.xlabel("Predicted label")
     plt.tight_layout()
 
+    plt.show()
     plt.savefig(f"confusion_matrix_{epochs}.png")
     print("Matrix saved as .png")
 
     pass
+
+def plot_errors(true_labels, predicted_labels, epochs):
+    # Create the line graph
+    # bins = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    # true_discrete = np.digitize(true_labels, bins)
+    # pred_discrete = np.digitize(predicted_labels, bins)
+    # list_epochs = list(range(1, epochs+1))
+    # error_values = np.subtract(true_discrete, pred_discrete)
+    error_values = np.subtract(true_labels, predicted_labels)
+    # plt.plot(list_epochs, error_values, label='Training Loss')
+    plt.plot(error_values, label='Training Loss')
+
+    # Add labels and title
+    plt.xlabel('Training iteration')
+    plt.ylabel('Error value')
+    plt.title('MLP model error over time')
+
+    # Show the graph
+    plt.show()
+    plt.savefig(f"errors_{epochs}.png")
+    print("Line plot saved as .png")
