@@ -125,7 +125,7 @@ def run_training(network, x, y, epochs, display_output=True):
 
 # function to run testing of model
 
-def run_testing(network, x, y):
+def run_testing(network, x, y, type='Test'):
     num_correct = []
     true_labels = []
     predicted_labels = []
@@ -146,7 +146,7 @@ def run_testing(network, x, y):
 
     with open(f"scores_task2_{count}.txt", "w") as f:
         correct_array = np.asarray(num_correct)
-        print("\nTesting Performance = ",
+        print(f"\nTesting {type} Performance = ",
             correct_array.sum() / correct_array.size)
         evaluate(true_labels, predicted_labels)
     pass
@@ -236,20 +236,22 @@ def task2_100():
     X_train, y_train, X_test, y_test = generate_data(
         rows=500, cols=4, train_size=0.8)
     # Number of epochs the network will be trained on.
-    epochs = 100
+    epochs = 2000
     # Create a network.
     network = MultilayeredPerceptron(
         input_size=4, hidden_size=40, output_size=1, learning_rate=0.1, activation=sigmoid)
     # Train network.
     run_training(network, X_train, y_train, epochs)
-    # Test Network Performance.
+    # Test Network train Performance.
+    run_testing(network, X_train, y_train, type='Train')
+    # Test Network testing Performance.
     run_testing(network, X_test, y_test)
     # get true and predicitons
     true_labels, predicted_labels = get_pred_values(network, X_test, y_test)
     # visualise predictions
-    confusion_visual(true_labels, predicted_labels, epochs)
+    # confusion_visual(true_labels, predicted_labels, epochs)
     # Visualise Errors 
-    plot_errors(true_labels, predicted_labels, epochs)
+    # plot_errors(true_labels, predicted_labels, epochs)
 
 
 def task2_1000():
@@ -264,14 +266,16 @@ def task2_1000():
         input_size=4, hidden_size=40, output_size=1, learning_rate=0.1, activation=sigmoid)
     # Train network.
     run_training(network, X_train, y_train, epochs)
+    
     # Test Network Performance.
+    run_testing(network, X_train, y_train, type='Train')
     run_testing(network, X_test, y_test)
     # get true and predicitons
-    true_labels, predicted_labels = get_pred_values2(network, X_test, y_test)
+    true_labels, predicted_labels = get_pred_values(network, X_test, y_test)
     # visualise predictions
     confusion_visual(true_labels, predicted_labels, epochs)
     # Visualise Errors 
-    plot_errors(true_labels, predicted_labels, epochs)
+    # plot_errors(true_labels, predicted_labels, epochs)
 
 
 def task2_10000():
@@ -287,13 +291,14 @@ def task2_10000():
     # Train network.
     run_training(network, X_train, y_train, epochs)
     # Test Network Performance.
+    run_testing(network, X_train, y_train, type='Train')
     run_testing(network, X_test, y_test)
     # get true and predicitons
     true_labels, predicted_labels = get_pred_values2(network, X_test, y_test)
     # visualise predictions
     confusion_visual(true_labels, predicted_labels, epochs)
     # Visualise Errors 
-    plot_errors(true_labels, predicted_labels, epochs)
+    # plot_errors(true_labels, predicted_labels, epochs)
 
 def task2_25000():
 
@@ -308,13 +313,14 @@ def task2_25000():
     # Train network.
     run_training(network, X_train, y_train, epochs)
     # Test Network Performance.
+    run_testing(network, X_train, y_train, type='Train')
     run_testing(network, X_test, y_test)
     # get true and predicitons
     true_labels, predicted_labels = get_pred_values(network, X_test, y_test)
     # visualise predictions
     confusion_visual(true_labels, predicted_labels, epochs)
     # Visualise Errors 
-    plot_errors(true_labels, predicted_labels, epochs)
+    # plot_errors(true_labels, predicted_labels, epochs)
 
 def task2_40000():
 
@@ -329,13 +335,14 @@ def task2_40000():
     # Train network.
     run_training(network, X_train, y_train, epochs)
     # Test Network Performance.
+    run_testing(network, X_train, y_train, type='Train')
     run_testing(network, X_test, y_test)
     # get true and predicitons
     true_labels, predicted_labels = get_pred_values(network, X_test, y_test)
     # visualise predictions
     confusion_visual(true_labels, predicted_labels, epochs)
     # Visualise Errors 
-    plot_errors(true_labels, predicted_labels, epochs)
+    # plot_errors(true_labels, predicted_labels, epochs)
 
 def test():
     pass
@@ -348,7 +355,7 @@ def test():
 
 if __name__ == "__main__":
     task2_100()   # network = MultilayeredPerceptron(input_size=4, hidden_size=5, output_size=1, learning_rate=0.1, activation=sigmoid)
-    task2_1000()  # network = MultilayeredPerceptron(input_size=4, hidden_size=50, output_size=1, learning_rate=0.1, activation=sigmoid)
+    #task2_1000()  # network = MultilayeredPerceptron(input_size=4, hidden_size=50, output_size=1, learning_rate=0.1, activation=sigmoid)
     # task2_10000() # network = MultilayeredPerceptron(input_size=4, hidden_size=500, output_size=1, learning_rate=0.1, activation=sigmoid)
     # task2_25000()
     # task2_40000()
