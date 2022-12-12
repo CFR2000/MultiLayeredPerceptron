@@ -94,6 +94,8 @@ class MultilayeredPerceptron:
         self.weights1 += self.learning_rate * \
             np.dot((h_output_err * hidden_val * (1.0 - hidden_val)), inputs.T)
 
+        return error
+
     def train(self, inputs, labels):
         # Train the network for a number of epochs
         self.backward(inputs, labels)
@@ -111,14 +113,29 @@ class MultilayeredPerceptron:
 
 
 # function to run training of model
-def run_training(network, x, y, epochs, display_output=True):
+def run_training(network, x, y, epochs, display_output=True, graph_errors=False):
+    errors = []
     for epoch in range(epochs):
         for c, row in enumerate(x):
             inputs = (np.asfarray(row[:]))
             targets = (np.asfarray(y[c], dtype=float))
             network.train(inputs, targets)
         if display_output:
-            print(f"Epoch {epoch}: Training Occurring ...")
+            error = network.backward(inputs, targets)
+            errors.append(error)
+            print(f"Epoch {epoch}: Training Occurring ... Average Error: {np.mean(error)}")
+    if graph_errors:
+        # Convert the array into a one-dimensional array
+        errors = np.squeeze(errors)
+
+        plt.figure()
+        # Customize the chart title, x-axis label, and y-axis label
+        plt.plot(errors)
+        # Add labels and title
+        plt.show()
+        # plt.savefig("graphing_errors_task2_{epochs}.png")
+    print(f"Average Error over Entire Network: {np.mean(errors)}")
+
     pass
 
 
@@ -193,12 +210,12 @@ def evaluate(true, pred):
 
     #Evaluate Performance
     print("Accuracy Score = ", accuracy_score(true_discrete, pred_discrete))
-    print("Precision Score = ", precision_score(true_discrete, pred_discrete,
-          average='micro'))  # micro suitable for multiclass analysis
-    print("Recall Score = ", recall_score(true_discrete, pred_discrete,
-          average='micro'))  # micro suitable for multiclass classification
-    # micro suitable for multiclass classification
-    print("F1 Score = ", f1_score(true_discrete, pred_discrete, average='micro'))
+    # print("Precision Score = ", precision_score(true_discrete, pred_discrete,
+    #       average='micro'))  # micro suitable for multiclass analysis
+    # print("Recall Score = ", recall_score(true_discrete, pred_discrete,
+    #       average='micro'))  # micro suitable for multiclass classification
+    # # micro suitable for multiclass classification
+    # print("F1 Score = ", f1_score(true_discrete, pred_discrete, average='micro'))
     pass
 
 # ==================================================================== #
@@ -237,12 +254,12 @@ def task2_100():
     X_train, y_train, X_test, y_test = generate_data(
         rows=500, cols=4, train_size=0.8)
     # Number of epochs the network will be trained on.
-    epochs = 20
+    epochs = 1500
     # Create a network.
     network = MultilayeredPerceptron(
         input_size=4, hidden_size=40, output_size=1, learning_rate=0.1, activation=sigmoid)
     # Train network.
-    run_training(network, X_train, y_train, epochs)
+    run_training(network, X_train, y_train, epochs, graph_errors=True)
     # Test Network train Performance.
     run_testing(network, X_train, y_train, type='Train')
     # Test Network testing Performance.
@@ -250,7 +267,7 @@ def task2_100():
     # get true and predicitons
     true_labels, predicted_labels = get_pred_values(network, X_test, y_test)
     # visualise predictions
-    # confusion_visual(true_labels, predicted_labels, epochs)
+    confusion_visual(true_labels, predicted_labels, epochs)
     # Visualise Errors 
     # plot_errors(true_labels, predicted_labels, epochs)
 
@@ -261,7 +278,7 @@ def task2_1000():
     X_train, y_train, X_test, y_test = generate_data(
         rows=500, cols=4, train_size=0.8)
     # Number of epochs the network will be trained on.
-    epochs = 100
+    epochs = 1000
     # Create a network.
     network = MultilayeredPerceptron(
         input_size=4, hidden_size=40, output_size=1, learning_rate=0.1, activation=sigmoid)

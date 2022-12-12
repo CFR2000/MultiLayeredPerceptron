@@ -5,18 +5,18 @@ import numpy as np
 from itertools import product
 
 
-def visualise_learning(output_data, num_epochs):
+def visualise_learning(output_data, epochs):
     # Create a DataFrame from the output data
-    df = pd.DataFrame(output_data)
-
+    
     # Use the DataFrame's plot method to create a line chart
-    df.plot()
+    plt.figure()
 
     # Customize the chart title, x-axis label, and y-axis label
-    df.plot(title="Output values over time",
+    plt.plot(output_data, title="Error over time",
             xlabel="Epoch", ylabel="Output value")
 
-    plt.savefig("output_chart.png")
+    plt.show()
+    plt.savefig("output_chart_XOR_{epochs}.png")
     pass
 
 
@@ -32,6 +32,8 @@ def confusion_visual(true_labels, predicted_labels, epochs):
 
     # add labels to the plot to show the number of true positive, true negative, false positive, and false negative predictions.
     classes = bins
+    # classes = ["Class " + str(number) for number in range(1, 27)]
+
     tick_marks = np.arange(len(classes))
     plt.xticks(tick_marks, classes, rotation=45)
     plt.yticks(tick_marks, classes)

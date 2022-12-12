@@ -1,0 +1,114 @@
+Strategy 
+
+    - To create a multilayered perceptron from scratch with 2 input layers, 4 hidden layers, 1 output layer, and a learning rate of 0.1, you would need to follow these steps:
+
+    - Initialize the weights and biases for each layer of the network. This can be done randomly, but it is often helpful to use a small value such as 0.1 to ensure that the network does not get stuck in a local minimum.
+
+    - Define the activation function for the network. This is a mathematical function that takes in the inputs to a neuron and produces an output. Common choices for activation functions include the sigmoid function, the tanh function, and the ReLU function.
+
+    - Implement the forward propagation step. This involves using the input data and the weights and biases of each layer to compute the output of each neuron in the network.
+
+    - Implement the backpropagation step. This involves using the output of the network and the true labels for the input data to compute the error at each layer of the network. The weights and biases of each layer are then updated to reduce this error.
+
+    - Repeat steps 3 and 4 for a number of epochs, or training iterations. This will allow the network to learn and improve its performance on the input data.
+
+    - Use the trained network to make predictions on new data. This involves using the same forward propagation step as in step 3, but without updating the weights and biases of the network.
+
+By following these steps, you can create a multilayered perceptron from scratch with 2 input layers, 4 hidden layers, 1 output layer, and a learning rate of 0.1.
+
+Option 2
+
+    As I mentioned earlier, I am a text-based AI and do not have the ability to create or display code. However, I can provide a high-level overview of how you might implement a multilayered perceptron with 2 input layers, 4 hidden layers, 1 output layer, and a learning rate of 0.1.
+
+    First, you would need to initialize the weights and biases for each layer of the network. This can be done by creating arrays or matrices for the weights and biases, and assigning random values to each element.
+
+    Next, you would need to define the activation function for the network. This could be a simple mathematical function such as the sigmoid or tanh function, or a more complex function such as the ReLU function.
+
+    After that, you would need to implement the forward propagation step. This involves using the input data and the weights and biases of each layer to compute the output of each neuron in the network. You would do this by applying the activation function to the weighted sum of the inputs to each neuron.
+
+    Next, you would need to implement the backpropagation step. This involves using the output of the network and the true labels for the input data to compute the error at each layer of the network. You would then use this error to update the weights and biases of each layer, using the learning rate to control the size of the updates.
+
+    You would then repeat the forward propagation and backpropagation steps for a number of epochs, or training iterations. This would allow the network to learn and improve its performance on the input data.
+
+    Finally, you would use the trained network to make predictions on new data. This would involve using the same forward propagation step as in the training phase, but without updating the weights and biases of the network.
+
+    Overall, implementing a multilayered perceptron with 2 input layers, 4 hidden layers, 1 output layer, and a learning rate of 0.1 would involve a combination of mathematical operations, array manipulation, and looping constructs. However, the specific details of the implementation would depend on the programming language and libraries you choose to use.
+
+After training 1
+
+
+Is this a good result on the epoch training? Epoch: 999
+Output: [[0.49975779]
+ [0.49994365]
+ [0.50006157]
+ [0.50024674]]
+
+The result of the training process is not very good, as the network's output is not very close to the expected labels. This suggests that the network is not learning effectively and may need to be adjusted.
+There are several reasons why the network might not be learning effectively. 
+- One possibility is that the learning rate is not well-suited to the specific task and dataset. A learning rate that is too small can cause the network to learn slowly, while a learning rate that is too large can cause the network to diverge or become unstable.
+- Another possibility is that the network architecture is not well-suited to the task. In this example, the network has 2 input layers, 4 hidden layers, and 1 output layer, but this may not be the optimal configuration for this specific task. Changing the number of layers or the number of neurons in each layer can affect the network's performance.
+- Additionally, the choice of activation function can also affect the network's performance. In this example, the sigmoid function is used as the activation function, but other functions such as the tanh or ReLU function may work better for this specific task.
+Overall, there are many factors that can affect the performance of a neural network, and it may take some experimentation and adjustment to find the optimal configuration for a specific task.
+
+
+More methods:
+
+If the network is not learning effectively, there are several ways to improve it without changing the number of layers, the number of neurons, or the learning rate.
+One way to improve the network is to preprocess the input data. For example, you can normalize or standardize the input data to ensure that all features are on the same scale, which can help the network learn more effectively.
+Another way to improve the network is to use a different activation function. In this example, the sigmoid function is used as the activation function, but other functions such as the tanh or ReLU function may work better for this specific task.
+Additionally, you can also try using a different optimization algorithm for training the network. In this example, the network uses the backpropagation algorithm to update the weights and biases, but other algorithms such as stochastic gradient descent or Adam may work better for this specific task.
+Overall, there are many ways to improve a neural network without changing the number of layers, the number of neurons, or the learning rate. By carefully preprocessing the input data, experimenting with different activation functions and optimization algorithms, and fine-tuning other hyperparameters, you can often improve the performance of a neural network without making major changes to its architecture.
+
+Results after dropout_rate used:
+
+Epoch: 999
+Output: [[0.52618701]
+ [0.49809486]
+ [0.5470867 ]
+ [0.46783922]]
+
+
+Test: Accuracy: 0.75
+
+Disparity in train and test: 
+The difference in the results between training and testing is likely due to overfitting. Overfitting occurs when a model becomes too specialized to the training data and is not able to generalize well to new data. This can lead to poor performance on the test data, even if the model performs well on the training data.
+To prevent overfitting, you can use regularization techniques such as dropout or weight decay to improve the generalization of the model. You can also try adjusting the network's hyperparameters, such as the learning rate, hidden size, and other parameters, to find the optimal configuration for the specific dataset. Additionally, you can preprocess the input data using techniques such as feature scaling or feature selection to improve the performance of the network.
+By using one or more of these techniques, you should be able to improve the performance of the network on the test data and achieve better results.
+
+Bias as possible fault?
+The use of biases in a multilayered perceptron model can affect the accuracy of the network's predictions. In particular, if the biases are not initialized correctly or are not updated properly during training, this can cause the network to perform poorly on the input data.
+However, in this specific implementation, the biases are initialized randomly using a small value (0.1) and are updated using the standard gradient descent algorithm during training. This should be sufficient to train the network and achieve good accuracy on the XOR dataset.
+If you are still seeing poor accuracy on the XOR dataset, there may be other factors that are affecting the performance of the network. For example, the learning rate or the configuration of the hidden layer may not be optimal for the specific dataset, or the network may be overfitting to the training data.
+To improve the accuracy of the network, you can try adjusting the hyperparameters and regularization techniques, as well as using different optimization algorithms or initialization methods for the weights and biases. By experimenting with different configurations, you should be able to find a set of hyperparameters that improve the performance of the network on the XOR dataset.
+
+
+Model fixed:
+By adjusting code to allow for proper weight changes
+
+
+issue with continuous values: Solution binning, rounding causes false positives
+
+A better approach to rounding continuous values may be to use a technique called binning. Binning is a process where continuous values are divided into a set of intervals (or bins), and the values in each interval are assigned a discrete value (e.g. an integer). This can allow you to convert continuous values to discrete values while preserving more of the original information in the data.
+To use binning to convert continuous values to discrete values, you can use the numpy.digitize function. This function takes an array of continuous values and an array of bin edges, and returns an array of discrete values that indicate which bin each value belongs to.
+For example, suppose you have an array of continuous values true and you want to convert these values to discrete values using the following bins:
+
+Bin 1: values less than 0.3
+Bin 2: values between 0.3 and 0.6
+Bin 3: values greater than 0.6
+You could use the numpy.digitize function as follows:
+
+This will convert the continuous values in the true array to discrete values that indicate which bin each value belongs to. For example, a value of 0.2 would be assigned the value 1, a value of 0.4 would be assigned the value 2, and a value of 0.7 would be assigned the value 3.
+Once you have converted the continuous values to discrete values, you can use the accuracy_score function from the sklearn.metrics module to compute the accuracy of the predictions made by the MLP model.
+
+
+
+LETTER - Overfitting
+The return 1 / (1+np.exp(-x)) statement you posted is defining the logistic function, which is a common activation function used in neural networks. The logistic function is defined as 1 / (1 + exp(-x)), where x is the input to the function and exp is the exponential function.
+The warning message you are seeing indicates that the function is encountering a value of x that is causing the function to return a value of inf (infinity). This can happen if the input to the function is a very large negative number.
+One way to avoid this issue is to use a different activation function, such as the ReLU (Rectified Linear Unit) function, which is defined as max(0, x). This function does not have the same issue with large negative inputs.
+Alternatively, you can add checks to your code to make sure that the input to the logistic function is not too large. For example, you could add a statement to check if the input is less than a certain threshold and if it is, return 0 or 1 instead of using the logistic function. This would avoid the overflow issue and should not significantly affect the performance of the neural network.
+
+Issues - 
+It looks like you are running a Python script that is using a multi-layer perceptron (MLP) to classify letters. 
+The script is raising two runtime warnings: one for an overflow encountered
+ in a dot product, and one for encountering an invalid value in a multiplication.
