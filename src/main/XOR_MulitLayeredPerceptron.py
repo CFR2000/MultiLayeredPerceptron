@@ -5,6 +5,7 @@ from sklearn.metrics import accuracy_score
 import random
 import pandas as pd
 import matplotlib.pyplot as plt
+from visualise import visualise_learning
 
 def sigmoid(x):
     # Define the sigmoid activation function
@@ -64,22 +65,34 @@ class MultilayeredPerceptron:
         self.weights2 += self.learning_rate * self.product(((error * output_val) * (1.0 - output_val)),hidden_val.T)
         self.weights1 += self.learning_rate * self.product(((h_output_err * hidden_val) * (1.0 - hidden_val)),inputs.T)
 
+        return error
         pass
 
     def train(self, inputs, labels, epochs):
         # Train the network for a number of epochs
         output_val = []
+        errors = []
         for epoch in range(epochs):
 
             # Print the current epoch number
             print(f"Epoch: {epoch}")
 
             # Perform the backpropagation step
-            self.backward(inputs, labels)
+            error = self.backward(inputs, labels)
             
             _, output_val = self.forward(inputs)
             # Print the output of the network after training
+            print(f"Average Error: {np.mean(error)}")
             print(f"Output: {output_val}")
+            errors.append(np.mean(error))
+                # Create a new figure
+        plt.figure()
+        # Customize the chart title, x-axis label, and y-axis label
+        plt.plot(errors)
+        plt.show()
+        plt.savefig("output_chart_XOR_{epochs}.png")
+        print(f"Average Error over Entire Network: {np.mean(errors)}")
+        
 
     def predict(self, inputs):
         # Use the trained network to make predictions on new dat
@@ -147,7 +160,7 @@ def task1():
     y_test = np.array([[0], [1], [1], [0]])
 
 
-    epochs = 1000
+    epochs = 10000
     # train_and_test_and_save(network, X, y, X_test, y_test, epochs)
 
     network.train(X, y, epochs)
