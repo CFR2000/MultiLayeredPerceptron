@@ -144,10 +144,11 @@ def run_testing(network, x, y, type='Test'):
         else:
             num_correct.append(0)
 
-    with open(f"scores_task2_{count}.txt", "w") as f:
+    with open(f"scores_task2_{count+1}_{type}.txt", "w") as f:
         correct_array = np.asarray(num_correct)
-        print(f"\nTesting {type} Performance = ",
-            correct_array.sum() / correct_array.size)
+        performance = correct_array.sum() / correct_array.size
+        print(f"\nTesting {type} Performance = {performance}")
+        f.write(f"\nTesting {type} Performance = {performance}")
         evaluate(true_labels, predicted_labels)
     pass
 
@@ -236,7 +237,7 @@ def task2_100():
     X_train, y_train, X_test, y_test = generate_data(
         rows=500, cols=4, train_size=0.8)
     # Number of epochs the network will be trained on.
-    epochs = 2000
+    epochs = 20
     # Create a network.
     network = MultilayeredPerceptron(
         input_size=4, hidden_size=40, output_size=1, learning_rate=0.1, activation=sigmoid)
