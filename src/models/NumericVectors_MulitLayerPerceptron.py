@@ -254,12 +254,12 @@ def task2_100():
     X_train, y_train, X_test, y_test = generate_data(
         rows=500, cols=4, train_size=0.8)
     # Number of epochs the network will be trained on.
-    epochs = 1500
+    epochs = 100
     # Create a network.
     network = MultilayeredPerceptron(
         input_size=4, hidden_size=40, output_size=1, learning_rate=0.1, activation=sigmoid)
     # Train network.
-    run_training(network, X_train, y_train, epochs, graph_errors=True)
+    run_training(network, X_train, y_train, epochs)
     # Test Network train Performance.
     run_testing(network, X_train, y_train, type='Train')
     # Test Network testing Performance.
@@ -296,13 +296,13 @@ def task2_1000():
     # plot_errors(true_labels, predicted_labels, epochs)
 
 
-def task2_10000():
+def task2_2000():
 
     # load the data set.
     X_train, y_train, X_test, y_test = generate_data(
         rows=500, cols=4, train_size=0.8)
     # Number of epochs the network will be trained on.
-    epochs = 10000
+    epochs = 2000
     # Create a network.
     network = MultilayeredPerceptron(
         input_size=4, hidden_size=40, output_size=1, learning_rate=0.1, activation=sigmoid)
@@ -318,13 +318,13 @@ def task2_10000():
     # Visualise Errors 
     # plot_errors(true_labels, predicted_labels, epochs)
 
-def task2_25000():
+def task2_5000():
 
     # load the data set.
     X_train, y_train, X_test, y_test = generate_data(
         rows=500, cols=4, train_size=0.8)
     # Number of epochs the network will be trained on.
-    epochs = 25000
+    epochs = 5000
     # Create a network.
     network = MultilayeredPerceptron(
         input_size=4, hidden_size=40, output_size=1, learning_rate=0.1, activation=sigmoid)
@@ -340,13 +340,13 @@ def task2_25000():
     # Visualise Errors 
     # plot_errors(true_labels, predicted_labels, epochs)
 
-def task2_40000():
+def task2_10000():
 
     # load the data set.
     X_train, y_train, X_test, y_test = generate_data(
         rows=500, cols=4, train_size=0.8)
     # Number of epochs the network will be trained on.
-    epochs = 40000
+    epochs = 10000
     # Create a network.
     network = MultilayeredPerceptron(
         input_size=4, hidden_size=40, output_size=1, learning_rate=0.1, activation=sigmoid)
@@ -373,10 +373,10 @@ def test():
 
 if __name__ == "__main__":
     task2_100()   # network = MultilayeredPerceptron(input_size=4, hidden_size=5, output_size=1, learning_rate=0.1, activation=sigmoid)
-    #task2_1000()  # network = MultilayeredPerceptron(input_size=4, hidden_size=50, output_size=1, learning_rate=0.1, activation=sigmoid)
-    # task2_10000() # network = MultilayeredPerceptron(input_size=4, hidden_size=500, output_size=1, learning_rate=0.1, activation=sigmoid)
-    # task2_25000()
-    # task2_40000()
+    task2_1000()  # network = MultilayeredPerceptron(input_size=4, hidden_size=50, output_size=1, learning_rate=0.1, activation=sigmoid)
+    task2_2000() # network = MultilayeredPerceptron(input_size=4, hidden_size=500, output_size=1, learning_rate=0.1, activation=sigmoid)
+    # task2_5000()
+    # task2_10000()
     
     pass
 

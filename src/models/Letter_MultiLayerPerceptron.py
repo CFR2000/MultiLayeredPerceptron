@@ -213,7 +213,7 @@ def task3_1000():
     network = MultilayeredPerceptron(
         input_size=16, hidden_size=100, output_size=26, learning_rate=0.1, activation=sigmoid)
     # Train network.
-    run_training(network, X_train, y_train, epochs, graph_errors=True)
+    run_training(network, X_train, y_train, epochs, graph_errors=False)
     # Test Network Performance.
     run_testing(network, X_train, y_train, type='Train')
     run_testing(network, X_test, y_test)
